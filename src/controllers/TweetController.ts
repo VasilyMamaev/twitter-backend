@@ -130,6 +130,53 @@ class TweetController {
       });
     }
   }
+
+  async update(req: express.Request, res: express.Response): Promise<void> {
+    try {
+      const user = req.user as UserModelDocumentInterface;
+
+      if (user) {
+        const tweetId = req.params.id;
+
+        if (!isValidObjectId(tweetId)) {
+          res.status(400).send();
+          return;
+        }
+
+        const tweet = await TweetModel.findById(tweetId);
+
+        if (tweet) {
+          if (String(tweet.user) === String(user._id)) {
+            const text = req.body.text;
+            tweet.text = text;
+            tweet.save();
+            res.send();
+          } else {
+            res
+              .status(403)
+              .json({
+                status: 'error',
+                message: "you don't have enough rights",
+              })
+              .send();
+          }
+        } else {
+          res
+            .status(404)
+            .json({
+              status: 'error',
+              message: "tweet doesn't exist",
+            })
+            .send();
+        }
+      }
+    } catch (err) {
+      res.status(500).json({
+        status: 'error',
+        errors: JSON.stringify(err),
+      });
+    }
+  }
 }
 
 export const TweetCtrl = new TweetController();

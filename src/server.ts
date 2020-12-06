@@ -39,6 +39,12 @@ app.post(
   createTweetValidations,
   TweetCtrl.create
 );
+app.put(
+  '/tweets/:id',
+  passport.authenticate('jwt'),
+  createTweetValidations,
+  TweetCtrl.update
+);
 app.delete('/tweets/:id', passport.authenticate('jwt'), TweetCtrl.delete);
 
 app.listen(PORT, (): void => {
