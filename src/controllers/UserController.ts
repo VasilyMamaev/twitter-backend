@@ -6,11 +6,10 @@ import jwt from 'jsonwebtoken';
 import { mongoose } from '../core/db';
 import { UserModel, UserModelDocumentInterface, UserModelInterface } from '../models/UserModel';
 import { generateMD5 } from '../utils/generateHash';
+import { isValidObjectId } from '../utils/isValidObjectId';
 import { sendEmail } from '../utils/sendEmail';
 
 dotenv.config();
-
-const isValidObjectId = mongoose.Types.ObjectId.isValid;
 
 class UserController {
   async index(_: express.Request, res: express.Response): Promise<void> {

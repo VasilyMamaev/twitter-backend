@@ -36,7 +36,7 @@ passport.use(
       secretOrKey: process.env.SECRET_KEY || '123',
       jwtFromRequest: ExtractJwt.fromHeader('token'),
     },
-    async (payload: { data: UserModelInterface }, done) => {
+    async (payload: { data: UserModelInterface }, done): Promise<void> => {
       try {
         const user = await UserModel.findById(payload.data._id).exec();
 
